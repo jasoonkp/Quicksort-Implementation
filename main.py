@@ -1,12 +1,12 @@
-
 from random import randint
+import time
 
 # defines array
-numArray = [0]*25
+numArray = [0]*100000
 
 
 # generates random array
-for i in range(0,25):
+for i in range(0,100000):
     numArray[i] = randint(1,100)
 
 
@@ -42,14 +42,18 @@ def Partition(numArray,l,r):
 
 # quicksort method (recursive)
 def Quicksort(numArray,l,r):
-    printArray(numArray)
-    print("")
+ #  printArray(numArray)
 
-    if l >= r:
-        return
-    q = Partition(numArray,l,r)
-    Quicksort(numArray,l,q-1)
-    Quicksort(numArray,q+1,r)
+    while l < r:
+        q = Partition(numArray,l,r)
+
+    # Tail-Recursion Elimination (optimization to speed algoritm up)
+        if (q-1) < (r - q):
+            Quicksort(numArray,l,q-1)
+            l = q + 1
+        else:
+            Quicksort(numArray,q+1,r)
+            r = q - 1
 
 
  
@@ -57,10 +61,14 @@ def Quicksort(numArray,l,r):
 
 
 def main():
+    print("unsorted: ",end=" " )
     printArray(numArray)
-    swapValues(numArray, 1 ,2)
+    start = time.time()
     Quicksort(numArray,0,len(numArray)-1)
+    end = time.time()
+    print("sorted:   ",end=" " )
     printArray(numArray)
+    print("time it took to execute:", end - start, " seconds")
 
 if __name__ == "__main__":
     main()
